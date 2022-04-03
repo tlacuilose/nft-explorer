@@ -1,7 +1,6 @@
 package moralis_datasource
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/tlacuilose/nft-explorer/env_loader"
@@ -20,8 +19,7 @@ func TestGetNFT(t *testing.T) {
 
 	response, err := d.GetNFTs(env.Account, "eth")
 	if err != nil {
-		fmt.Println(err)
-		t.Error("Failed to fetch nfts")
+		t.Error(err)
 	}
 
 	if response.StatusCode != 200 {

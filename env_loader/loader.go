@@ -2,6 +2,7 @@ package env_loader
 
 import (
 	"errors"
+	"fmt"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -23,7 +24,16 @@ func LoadMoralisEnvValues(envPath string) (MoralisEnvValues, error) {
 	}
 
 	base := os.Getenv("MORALIS_API_BASE")
-	key := os.Getenv("MORALIS_KEY")
+	if base == "" {
+		return MoralisEnvValues{}, errors.New("Failed to get moralis base uri env variable.")
+	}
+
+	key := os.Getenv("MORALIS_API_KEY")
+	if key == "" {
+		return MoralisEnvValues{}, errors.New("Failed to get moralis api key env variable.")
+	}
+
+	fmt.Println(key)
 
 	return MoralisEnvValues{base, key}, nil
 }
@@ -35,6 +45,9 @@ func LoadTestingEthAccountValues(envPath string) (EthAccountValues, error) {
 	}
 
 	account := os.Getenv("ETH_TESTING_ACCOUNT")
+	if account == "" {
+		return EthAccountValues{}, errors.New("Failed to get account env variable.")
+	}
 
 	return EthAccountValues{account}, nil
 }
