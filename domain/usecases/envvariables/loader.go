@@ -1,8 +1,7 @@
-package env_loader
+package envvariables
 
 import (
 	"errors"
-	"fmt"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -32,8 +31,6 @@ func LoadMoralisEnvValues(envPath string) (MoralisEnvValues, error) {
 	if key == "" {
 		return MoralisEnvValues{}, errors.New("Failed to get moralis api key env variable.")
 	}
-
-	fmt.Println(key)
 
 	return MoralisEnvValues{base, key}, nil
 }
