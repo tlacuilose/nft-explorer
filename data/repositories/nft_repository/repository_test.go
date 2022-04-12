@@ -1,34 +1,40 @@
 package nft_repository
 
 import (
-	"bytes"
-	"io/ioutil"
-	"net/http"
 	"testing"
+
+	"github.com/tlacuilose/nft-explorer/domain/entities"
+	"github.com/tlacuilose/nft-explorer/domain/interfaces"
 )
 
 type MockNFTService struct {
 }
 
-func (m *MockNFTService) GetNFTsOfAccount(owner string) (*http.Response, error) {
-	body := "Hello world"
-	response := &http.Response{
-		Status:        "200 OK",
-		StatusCode:    200,
-		Proto:         "HTTP/1.1",
-		ProtoMajor:    1,
-		ProtoMinor:    1,
-		Body:          ioutil.NopCloser(bytes.NewBufferString(body)),
-		ContentLength: int64(len(body)),
-		Header:        make(http.Header, 0),
-	}
-	return response, nil
+var mockArtworks []entities.Artwork = make([]entities.Artwork, 0)
+
+func (m *MockNFTService) GetNFTsOfAccount(owner string) (*[]entities.Artwork, error) {
+	return &mockArtworks, nil
 }
 
 func TestCreateNFTRepository(t *testing.T) {
 	s := &MockNFTService{}
 	repo := New(s)
 	if repo == nil {
-		t.Fatal("Testing error")
+		t.Fatal("Could not create an NFT Repository.")
 	}
+}
+
+func TestOwnedCollectionRepositoryTest(t *testing.T) {
+	var mockRepo interfaces.OwnedCollectionRepository
+	s := &MockNFTService{}
+	mockRepo = New(s)
+	if mockRepo == nil {
+		t.Fatal("Could not create an NFT Repository.")
+	}
+
+	artworks, _ := mockRepo.GetOwnedNFTs("")
+	if artworks != &mockArtworks {
+		t.Fatal("Owned repository does not use nft service correctly.")
+	}
+
 }

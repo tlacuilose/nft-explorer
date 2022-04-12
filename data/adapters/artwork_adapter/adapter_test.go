@@ -3,22 +3,25 @@ package artwork_adapter
 import (
 	"testing"
 
+	"github.com/tlacuilose/nft-explorer/data/datasources/loaders/envvariables_loader"
 	"github.com/tlacuilose/nft-explorer/data/datasources/services/moralis_service"
-	"github.com/tlacuilose/nft-explorer/domain/usecases/envvariables"
 )
 
 func TestUseArtworkAdapter(t *testing.T) {
-	moralisEnv, err := envvariables.LoadMoralisEnvValues("../../../.env")
+	accountEnv, err := envvariables_loader.LoadTestingEthAccountValues("../../../.env")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	accountEnv, err := envvariables.LoadTestingEthAccountValues("../../../.env")
+	moralisEnv, err := envvariables_loader.LoadMoralisEnvValues("../../../.env")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	ms := moralis_service.New(moralisEnv.Base, moralisEnv.Key)
+	ms, err := moralis_service.New(moralisEnv.Base, moralisEnv.Key)
+	if err != nil {
+		t.Fatal(err)
+	}
 	adapter := New(ms)
 
 	artworks, err := adapter.GetNFTsOfAccount(accountEnv.Account)

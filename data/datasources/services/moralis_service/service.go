@@ -16,15 +16,15 @@ type MoralisService struct {
 	chain    string
 }
 
-func New(api_base string, api_key string) *MoralisService {
+func New(apiBase string, apiKey string) (*MoralisService, error) {
 	client := &http.Client{}
 
 	return &MoralisService{
 		client:   client,
-		api_base: api_base,
-		api_key:  api_key,
+		api_base: apiBase,
+		api_key:  apiKey,
 		chain:    "eth",
-	}
+	}, nil
 }
 
 func (ms *MoralisService) SetChain(chain string) {

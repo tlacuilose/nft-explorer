@@ -15,12 +15,6 @@ func New(ds interfaces.NFTApiService) *NFTRepository {
 	}
 }
 
-func (repo *NFTRepository) GetOwnedNFTs(owner string) ([]entities.Artwork, error) {
-	_, err := repo.ds.GetNFTsOfAccount(owner)
-	if err != nil {
-		return make([]entities.Artwork, 0), err
-	}
-
-	artworks := make([]entities.Artwork, 0)
-	return artworks, nil
+func (repo *NFTRepository) GetOwnedNFTs(owner string) (*[]entities.Artwork, error) {
+	return repo.ds.GetNFTsOfAccount(owner)
 }
