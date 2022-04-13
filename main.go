@@ -1,23 +1,9 @@
 package main
 
-import (
-	"fmt"
-	"io"
-	"net/http"
-)
+import "github.com/tlacuilose/nft-explorer/presentation/apis/grpc_api"
+
+var serverPort int = 50005
 
 func main() {
-	response, err := http.Get("https://cataas.com/api/cats?tags=cute")
-	if err != nil {
-		fmt.Println("Error fetching get request.")
-		return
-	}
-
-	defer response.Body.Close()
-
-	body, err := io.ReadAll(response.Body)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Printf("%s", body)
+	grpc_api.StartGrpcServer(serverPort)
 }

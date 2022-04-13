@@ -1,4 +1,4 @@
-package env_loader
+package envvariables_loader
 
 import (
 	"errors"
@@ -19,11 +19,18 @@ type EthAccountValues struct {
 func LoadMoralisEnvValues(envPath string) (MoralisEnvValues, error) {
 	err := godotenv.Load(envPath)
 	if err != nil {
-		return MoralisEnvValues{}, errors.New("Failed to load .env")
+		return MoralisEnvValues{}, err
 	}
 
 	base := os.Getenv("MORALIS_API_BASE")
-	key := os.Getenv("MORALIS_KEY")
+	if base == "" {
+		return MoralisEnvValues{}, errors.New("Failed to get moralis base uri env variable.")
+	}
+
+	key := os.Getenv("MORALIS_API_KEY")
+	if key == "" {
+		return MoralisEnvValues{}, errors.New("Failed to get moralis api key env variable.")
+	}
 
 	return MoralisEnvValues{base, key}, nil
 }
@@ -31,10 +38,13 @@ func LoadMoralisEnvValues(envPath string) (MoralisEnvValues, error) {
 func LoadTestingEthAccountValues(envPath string) (EthAccountValues, error) {
 	err := godotenv.Load(envPath)
 	if err != nil {
-		return EthAccountValues{}, errors.New("Failed to load .env")
+		return EthAccountValues{}, err
 	}
 
 	account := os.Getenv("ETH_TESTING_ACCOUNT")
+	if account == "" {
+		return EthAccountValues{}, errors.New("Failed to get account env variable.")
+	}
 
 	return EthAccountValues{account}, nil
 }
