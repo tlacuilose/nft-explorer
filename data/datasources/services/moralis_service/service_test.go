@@ -27,7 +27,7 @@ func TestGetNFT(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if len(moralisResponse.Results) == 0 {
+	if len(moralisResponse.Tokens) == 0 {
 		t.Fatal("Failed to get any results for the test response")
 	}
 }

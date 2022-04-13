@@ -1,6 +1,8 @@
 package artwork_adapter
 
 import (
+	"encoding/json"
+
 	"github.com/tlacuilose/nft-explorer/data/datasources/services/moralis_service"
 	"github.com/tlacuilose/nft-explorer/domain/entities"
 )
@@ -23,10 +25,13 @@ func (a *ArtworkAdapter) GetNFTsOfAccount(owner string) (*[]entities.Artwork, er
 
 	artworks := []entities.Artwork{}
 
-	for _, result := range moralisResponse.Results {
-		artworks = append(artworks, entities.Artwork{
-			Image_url: result.Token_uri,
-		})
+	for _, token := range moralisResponse.Tokens {
+		var artwork entities.Artwork
+		err := json.Unmarshal([]byte(token.Metadata), &artwork)
+		if err != nil {
+			return nil, err
+		}
+		artworks = append(artworks, artwork)
 	}
 
 	return &artworks, nil

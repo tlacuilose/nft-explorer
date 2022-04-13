@@ -1,5 +1,7 @@
 package entities
 
 type Artwork struct {
-	Image_url string
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	ImageURL    string `json:"image"`
 }
