@@ -12,7 +12,7 @@ func TestGetOwnedArtworks(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	arworks, err := getOwnedArtworks(testingAccount.Account)
+	arworks, err := GetOwnedArtworks(testingAccount.Account)
 	if err != nil {
 		t.Fatal(err)
 	}

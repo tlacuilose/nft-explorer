@@ -8,7 +8,7 @@ import (
 	"github.com/tlacuilose/nft-explorer/domain/entities"
 )
 
-func getOwnedArtworks(owner string) (*[]entities.Artwork, error) {
+func GetOwnedArtworks(owner string) (*[]entities.Artwork, error) {
 	moralisEnv, err := envvariables_loader.LoadMoralisEnvValues("../../../.env")
 	if err != nil {
 		return nil, err
