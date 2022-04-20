@@ -31,3 +31,21 @@ func TestGetNFT(t *testing.T) {
 		t.Fatal("Failed to get any results for the test response")
 	}
 }
+
+func TestValdateEthAccount(t *testing.T) {
+	envEth, err := envvariables_loader.LoadTestingEthAccountValues("../../../../.env")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	correctAccount := envEth.Account
+	incorrectAccount := envEth.Account[1:]
+
+	if err := validateEthAccount(correctAccount); err != nil {
+		t.Fatal("Could not verify a legitimate eth account.")
+	}
+
+	if err := validateEthAccount(incorrectAccount); err == nil {
+		t.Fatal("Could not reject a illegitimate eth account.")
+	}
+}

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"regexp"
 
 	"github.com/tlacuilose/nft-explorer/data/datasources/services/moralis_service/moralis_service_entities"
 )
@@ -32,6 +33,12 @@ func (ms *MoralisService) SetChain(chain string) {
 }
 
 func (ms *MoralisService) GetNFTsOfAccount(account string) (*moralis_service_entities.MoralisResponse, error) {
+	fmt.Println(account)
+	err := validateEthAccount(account)
+	if err != nil {
+		return &moralis_service_entities.MoralisResponse{}, err
+	}
+
 	uri := fmt.Sprintf("%s%s/nft?chain=%s&format=decimal", ms.api_base, account, ms.chain)
 
 	requestNFT, err := http.NewRequest("GET", uri, nil)
@@ -60,4 +67,13 @@ func (ms *MoralisService) GetNFTsOfAccount(account string) (*moralis_service_ent
 	}
 
 	return &moralis, nil
+}
+
+func validateEthAccount(account string) error {
+	r := regexp.MustCompile("^0x[0-9a-fA-F]{40}$")
+	if r.MatchString(account) {
+		return nil
+	} else {
+		return errors.New(fmt.Sprintf("The account %s is not a valid eth account.", account))
+	}
 }
