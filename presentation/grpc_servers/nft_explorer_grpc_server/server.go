@@ -20,7 +20,7 @@ func (s *NFTExplorerServer) ListOwnedArtworks(account *proto.Account, stream pro
 	if err != nil {
 		return err
 	}
-	for _, artwork := range *artworks {
+	for _, artwork := range artworks {
 		wg.Add(1)
 		go func(artwork entities.Artwork) {
 			defer wg.Done()

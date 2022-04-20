@@ -17,13 +17,13 @@ func New(ms *moralis_service.MoralisService) *ArtworkAdapter {
 	}
 }
 
-func (a *ArtworkAdapter) GetNFTsOfAccount(owner string) (*[]entities.Artwork, error) {
+func (a *ArtworkAdapter) GetNFTsOfAccount(owner string) ([]entities.Artwork, error) {
 	moralisResponse, err := a.ms.GetNFTsOfAccount(owner)
 	if err != nil {
 		return nil, err
 	}
 
-	artworks := []entities.Artwork{}
+	artworks := make([]entities.Artwork, 0)
 
 	for _, token := range moralisResponse.Tokens {
 		var artwork entities.Artwork
@@ -34,5 +34,5 @@ func (a *ArtworkAdapter) GetNFTsOfAccount(owner string) (*[]entities.Artwork, er
 		artworks = append(artworks, artwork)
 	}
 
-	return &artworks, nil
+	return artworks, nil
 }
