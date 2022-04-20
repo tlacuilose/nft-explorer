@@ -1,6 +1,7 @@
 package nft_repository
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/tlacuilose/nft-explorer/domain/entities"
@@ -12,8 +13,8 @@ type MockNFTService struct {
 
 var mockArtworks []entities.Artwork = make([]entities.Artwork, 0)
 
-func (m *MockNFTService) GetNFTsOfAccount(owner string) (*[]entities.Artwork, error) {
-	return &mockArtworks, nil
+func (m *MockNFTService) GetNFTsOfAccount(owner string) ([]entities.Artwork, error) {
+	return mockArtworks, nil
 }
 
 func TestCreateNFTRepository(t *testing.T) {
@@ -33,7 +34,7 @@ func TestOwnedCollectionRepositoryTest(t *testing.T) {
 	}
 
 	artworks, _ := mockRepo.GetOwnedNFTs("")
-	if artworks != &mockArtworks {
+	if !reflect.DeepEqual(artworks, mockArtworks) {
 		t.Fatal("Owned repository does not use nft service correctly.")
 	}
 

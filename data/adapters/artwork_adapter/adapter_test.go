@@ -29,7 +29,7 @@ func TestUseArtworkAdapter(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if len(*artworks) == 0 {
+	if len(artworks) == 0 {
 		t.Fatal("Failed to load test artworks.")
 	}
 }
