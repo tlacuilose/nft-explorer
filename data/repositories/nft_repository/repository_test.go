@@ -18,12 +18,30 @@ func (m *MockNFTService) GetNFTsOfAccount(owner string) ([]entities.Artwork, err
 	return mockArtworks, nil
 }
 
+// Mock an ArtworkCacheService interface
+
+type MockArtworkCacheService struct {
+}
+
+func (mc *MockArtworkCacheService) GetCachedOwnedArtworks(owner string) ([]entities.Artwork, error) {
+	return mockArtworks, nil
+}
+
+func (mc *MockArtworkCacheService) CacheOwnedArtworks(owner string, artworks []entities.Artwork) error {
+	return nil
+}
+
+func (mc *MockArtworkCacheService) DeleteCachedOwnedArtworks(owner string) error {
+	return nil
+}
+
 // Test the creation of a NFTRepository.
 func TestCreateNFTRepository(t *testing.T) {
 	s := &MockNFTService{}
-	repo := New(s)
+	c := &MockArtworkCacheService{}
+	repo := New(s, c)
 	if repo == nil {
-		t.Fatal("Could not create an NFT Repository.")
+		t.Fatal("Ceerroruld not create an NFT Repository.")
 	}
 }
 
@@ -31,7 +49,8 @@ func TestCreateNFTRepository(t *testing.T) {
 func TestOwnedCollectionRepositoryTest(t *testing.T) {
 	var mockRepo interfaces.OwnedCollectionRepository
 	s := &MockNFTService{}
-	mockRepo = New(s)
+	c := &MockArtworkCacheService{}
+	mockRepo = New(s, c)
 	if mockRepo == nil {
 		t.Fatal("Could not create an NFT Repository.")
 	}
