@@ -19,3 +19,11 @@ func TestLoadTestingEthAccountValues(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+// Test loading redis env values.
+func TestLoadRedisEnvValues(t *testing.T) {
+	_, err := LoadRedisEnvValues("../../../../.env")
+	if err != nil {
+		t.Fatal(err)
+	}
+}

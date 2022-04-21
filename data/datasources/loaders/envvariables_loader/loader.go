@@ -19,6 +19,11 @@ type EthAccountValues struct {
 	Account string
 }
 
+// RedisEnvValues are the redis db host.
+type RedisEnvValues struct {
+	Host string
+}
+
 // LoadMoralisEnvValues loads MoralisEnvValues from a .env file.
 func LoadMoralisEnvValues(envPath string) (MoralisEnvValues, error) {
 	err := godotenv.Load(envPath)
@@ -48,8 +53,23 @@ func LoadTestingEthAccountValues(envPath string) (EthAccountValues, error) {
 
 	account := os.Getenv("ETH_TESTING_ACCOUNT")
 	if account == "" {
-		return EthAccountValues{}, errors.New("Failed to get account env variable.")
+		return EthAccountValues{}, errors.New("Failed to get ethereum account env variable.")
 	}
 
 	return EthAccountValues{account}, nil
+}
+
+// LoadRedisEnvValues loads RedisEnvValues from a .env file.
+func LoadRedisEnvValues(envPath string) (RedisEnvValues, error) {
+	err := godotenv.Load(envPath)
+	if err != nil {
+		return RedisEnvValues{}, err
+	}
+
+	host := os.Getenv("REDIS_HOST")
+	if host == "" {
+		return RedisEnvValues{}, errors.New("Failed to get host of redis db.")
+	}
+
+	return RedisEnvValues{host}, nil
 }
