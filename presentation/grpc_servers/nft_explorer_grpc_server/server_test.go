@@ -12,6 +12,7 @@ import (
 	"google.golang.org/grpc"
 )
 
+// Mock a client calling the gRPC server.
 var serverPort = ":50004"
 
 var accountHasArtworkNamed string = "Runa need to kill you with ice skate boots #20"
@@ -50,6 +51,7 @@ func clientCall(t *testing.T, c chan *proto.Artwork) {
 	}
 }
 
+// Mock also stablishing the grpc api server.
 func serverCall(t *testing.T) {
 	lis, err := net.Listen("tcp", serverPort)
 	if err != nil {
@@ -65,7 +67,8 @@ func serverCall(t *testing.T) {
 	grpcServer.Serve(lis)
 }
 
-func TestNFTExplorerGrpcService(t *testing.T) {
+// Test that the gRPC server can use a server and a client to function.
+func TestNFTExplorerGrpcServer(t *testing.T) {
 	c := make(chan *proto.Artwork)
 	go serverCall(t)
 	go clientCall(t, c)

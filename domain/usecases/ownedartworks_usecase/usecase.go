@@ -1,3 +1,4 @@
+// Package defines the use case of retrieving owned artworks.
 package ownedartworks_usecase
 
 import (
@@ -8,6 +9,7 @@ import (
 	"github.com/tlacuilose/nft-explorer/domain/entities"
 )
 
+// GetOwnedArtworks returns a collection of artworks belonging to an owner.
 func GetOwnedArtworks(owner string) ([]entities.Artwork, error) {
 	moralisEnv, err := envvariables_loader.LoadMoralisEnvValues("../../../.env")
 	if err != nil {
@@ -22,5 +24,5 @@ func GetOwnedArtworks(owner string) ([]entities.Artwork, error) {
 	adapter := artwork_adapter.New(service)
 	repo := nft_repository.New(adapter)
 
-	return repo.GetOwnedNFTs(owner)
+	return repo.GetOwnedArtworks(owner)
 }

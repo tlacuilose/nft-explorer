@@ -7,6 +7,7 @@ import (
 	"github.com/tlacuilose/nft-explorer/data/datasources/services/moralis_service"
 )
 
+// Test using an adapter with a not adapted service.
 func TestUseArtworkAdapter(t *testing.T) {
 	accountEnv, err := envvariables_loader.LoadTestingEthAccountValues("../../../.env")
 	if err != nil {

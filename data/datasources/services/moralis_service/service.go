@@ -1,3 +1,4 @@
+// Package defines a service that connects to a moralis api.
 package moralis_service
 
 import (
@@ -10,6 +11,7 @@ import (
 	"github.com/tlacuilose/nft-explorer/data/datasources/services/moralis_service/moralis_service_entities"
 )
 
+// MoralisService is the type to access a moralis api.
 type MoralisService struct {
 	client   *http.Client
 	api_base string
@@ -17,6 +19,7 @@ type MoralisService struct {
 	chain    string
 }
 
+// New creates a moralis service, requires a valid api base and api key.
 func New(apiBase string, apiKey string) (*MoralisService, error) {
 	client := &http.Client{}
 
@@ -28,10 +31,12 @@ func New(apiBase string, apiKey string) (*MoralisService, error) {
 	}, nil
 }
 
+// SetChain may be used to modify the blockchain used in a moralis service.
 func (ms *MoralisService) SetChain(chain string) {
 	ms.chain = chain
 }
 
+// GetNFTsOfAccount will return all nfts from an account using the moralis api.
 func (ms *MoralisService) GetNFTsOfAccount(account string) (*moralis_service_entities.MoralisResponse, error) {
 	fmt.Println(account)
 	err := validateEthAccount(account)
@@ -69,6 +74,7 @@ func (ms *MoralisService) GetNFTsOfAccount(account string) (*moralis_service_ent
 	return &moralis, nil
 }
 
+// Validate that an ethereum account is well formed.
 func validateEthAccount(account string) error {
 	r := regexp.MustCompile("^0x[0-9a-fA-F]{40}$")
 	if r.MatchString(account) {

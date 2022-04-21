@@ -1,3 +1,4 @@
+// Package loads environment variables.
 package envvariables_loader
 
 import (
@@ -7,15 +8,18 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// MoralisEnvValues are the api base and api key of a moralis api.
 type MoralisEnvValues struct {
 	Base string
 	Key  string
 }
 
+// EthAccountValues are an Ethereum account.
 type EthAccountValues struct {
 	Account string
 }
 
+// LoadMoralisEnvValues loads MoralisEnvValues from a .env file.
 func LoadMoralisEnvValues(envPath string) (MoralisEnvValues, error) {
 	err := godotenv.Load(envPath)
 	if err != nil {
@@ -35,6 +39,7 @@ func LoadMoralisEnvValues(envPath string) (MoralisEnvValues, error) {
 	return MoralisEnvValues{base, key}, nil
 }
 
+// LoadTestingEthAccountValues loads EthAccountValues from a .env file.
 func LoadTestingEthAccountValues(envPath string) (EthAccountValues, error) {
 	err := godotenv.Load(envPath)
 	if err != nil {

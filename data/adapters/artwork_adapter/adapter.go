@@ -1,3 +1,4 @@
+// Package provides an adapter into the Artwork Entity.
 package artwork_adapter
 
 import (
@@ -7,16 +8,19 @@ import (
 	"github.com/tlacuilose/nft-explorer/domain/entities"
 )
 
+// Artwork Adapter is the required type to use this package.
 type ArtworkAdapter struct {
 	ms *moralis_service.MoralisService
 }
 
+// New creates a new artwork adapter.
 func New(ms *moralis_service.MoralisService) *ArtworkAdapter {
 	return &ArtworkAdapter{
 		ms,
 	}
 }
 
+// Get GetNFTsOfAccount returns the desired slice of Artwork entities.
 func (a *ArtworkAdapter) GetNFTsOfAccount(owner string) ([]entities.Artwork, error) {
 	moralisResponse, err := a.ms.GetNFTsOfAccount(owner)
 	if err != nil {

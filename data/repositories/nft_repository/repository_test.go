@@ -8,6 +8,7 @@ import (
 	"github.com/tlacuilose/nft-explorer/domain/interfaces"
 )
 
+// Mock a NFTApiService interface
 type MockNFTService struct {
 }
 
@@ -17,6 +18,7 @@ func (m *MockNFTService) GetNFTsOfAccount(owner string) ([]entities.Artwork, err
 	return mockArtworks, nil
 }
 
+// Test the creation of a NFTRepository.
 func TestCreateNFTRepository(t *testing.T) {
 	s := &MockNFTService{}
 	repo := New(s)
@@ -25,6 +27,7 @@ func TestCreateNFTRepository(t *testing.T) {
 	}
 }
 
+// Test that a NFTRepository can be of interface type OwnedCollectionRepository
 func TestOwnedCollectionRepositoryTest(t *testing.T) {
 	var mockRepo interfaces.OwnedCollectionRepository
 	s := &MockNFTService{}
@@ -33,7 +36,7 @@ func TestOwnedCollectionRepositoryTest(t *testing.T) {
 		t.Fatal("Could not create an NFT Repository.")
 	}
 
-	artworks, _ := mockRepo.GetOwnedNFTs("")
+	artworks, _ := mockRepo.GetOwnedArtworks("")
 	if !reflect.DeepEqual(artworks, mockArtworks) {
 		t.Fatal("Owned repository does not use nft service correctly.")
 	}

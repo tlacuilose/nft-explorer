@@ -1,3 +1,4 @@
+// Package defines a API using GRPC.
 package grpc_api
 
 import (
@@ -11,6 +12,7 @@ import (
 	"google.golang.org/grpc"
 )
 
+// StartGrpcServer starts a gRPC server on a given port.
 func StartGrpcServer(port int) {
 	serverPort := fmt.Sprintf(":%d", port)
 	lis, err := net.Listen("tcp", serverPort)
