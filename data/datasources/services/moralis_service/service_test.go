@@ -6,6 +6,7 @@ import (
 	"github.com/tlacuilose/nft-explorer/data/datasources/loaders/envvariables_loader"
 )
 
+// Test that a moralis service can get a single nft, uses a loaded testing eth account.
 func TestGetNFT(t *testing.T) {
 	envEth, err := envvariables_loader.LoadTestingEthAccountValues("../../../../.env")
 	if err != nil {
@@ -32,6 +33,7 @@ func TestGetNFT(t *testing.T) {
 	}
 }
 
+// Test that an ethereum account can be validated as well formed.
 func TestValdateEthAccount(t *testing.T) {
 	envEth, err := envvariables_loader.LoadTestingEthAccountValues("../../../../.env")
 	if err != nil {

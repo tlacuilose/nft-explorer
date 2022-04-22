@@ -1,26 +1,36 @@
+// Package defines the use case of retrieving owned artworks.
 package ownedartworks_usecase
 
 import (
-	"github.com/tlacuilose/nft-explorer/data/adapters/artwork_adapter"
+	"github.com/tlacuilose/nft-explorer/data/adapters/nft_api_service_adapter"
 	"github.com/tlacuilose/nft-explorer/data/datasources/loaders/envvariables_loader"
 	"github.com/tlacuilose/nft-explorer/data/datasources/services/moralis_service"
+	"github.com/tlacuilose/nft-explorer/data/datasources/services/redis_service"
 	"github.com/tlacuilose/nft-explorer/data/repositories/nft_repository"
 	"github.com/tlacuilose/nft-explorer/domain/entities"
 )
 
+// GetOwnedArtworks returns a collection of artworks belonging to an owner.
 func GetOwnedArtworks(owner string) ([]entities.Artwork, error) {
 	moralisEnv, err := envvariables_loader.LoadMoralisEnvValues("../../../.env")
 	if err != nil {
 		return nil, err
 	}
 
-	service, err := moralis_service.New(moralisEnv.Base, moralisEnv.Key)
+	moralis_service, err := moralis_service.New(moralisEnv.Base, moralisEnv.Key)
 	if err != nil {
 		return nil, err
 	}
 
-	adapter := artwork_adapter.New(service)
-	repo := nft_repository.New(adapter)
+	redisEnv, err := envvariables_loader.LoadRedisEnvValues("../../../.env")
+	if err != nil {
+		return nil, err
+	}
 
-	return repo.GetOwnedNFTs(owner)
+	cache_service := redis_service.New(redisEnv.Host, redisEnv.ExpirationSeconds)
+
+	nft_api_service := nft_api_service_adapter.New(moralis_service)
+	repo := nft_repository.New(nft_api_service, cache_service)
+
+	return repo.GetOwnedArtworks(owner)
 }

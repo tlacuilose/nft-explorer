@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"log"
+	"os"
 	"testing"
 
 	"github.com/tlacuilose/nft-explorer/data/datasources/loaders/envvariables_loader"
@@ -11,9 +13,12 @@ import (
 	"google.golang.org/grpc"
 )
 
+var logger *log.Logger = log.New(os.Stdout, "[TEST] ", 2)
+
 var serverPort int = 50003
 var accountHasArtworkNamed string = "Runa need to kill you with ice skate boots #20"
 
+// Mock a client call of the gRPC API.
 func clientCall(t *testing.T, c chan *proto.Artwork) {
 	accountEnv, err := envvariables_loader.LoadTestingEthAccountValues("../../../.env")
 	if err != nil {
@@ -48,7 +53,8 @@ func clientCall(t *testing.T, c chan *proto.Artwork) {
 	}
 }
 
-func TestNFTExplorerGrpcService(t *testing.T) {
+// Test that the gRPC server can be used by a client.
+func TestNFTExplorerGrpcServer(t *testing.T) {
 	c := make(chan *proto.Artwork)
 	go StartGrpcServer(serverPort)
 	go clientCall(t, c)
@@ -57,7 +63,7 @@ func TestNFTExplorerGrpcService(t *testing.T) {
 	if art == nil {
 		t.Fatal("Failed to get any artwork from grpc connection.")
 	}
-	fmt.Printf("Testing Artwork Name: %s", art.Name)
+	logger.Printf("Testing Artwork Name: %s", art.Name)
 	if art.Name != accountHasArtworkNamed {
 		t.Fatalf("Failed to get the testing artwork with name: %s", accountHasArtworkNamed)
 	}
