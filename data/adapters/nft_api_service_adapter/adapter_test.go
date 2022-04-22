@@ -8,7 +8,7 @@ import (
 )
 
 // Test using an adapter with a not adapted service.
-func TestUseArtworkAdapter(t *testing.T) {
+func TestUseNFTApiServiceAdapter(t *testing.T) {
 	accountEnv, err := envvariables_loader.LoadTestingEthAccountValues("../../../.env")
 	if err != nil {
 		t.Fatal(err)
