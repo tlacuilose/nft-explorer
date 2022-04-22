@@ -1,4 +1,4 @@
-package artwork_adapter
+package nft_api_service_adapter
 
 import (
 	"testing"

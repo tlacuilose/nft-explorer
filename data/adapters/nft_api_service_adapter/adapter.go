@@ -1,5 +1,5 @@
-// Package provides an adapter into the Artwork Entity.
-package artwork_adapter
+// Package provides an adapter to comply with NFTApiService.
+package nft_api_service_adapter
 
 import (
 	"encoding/json"

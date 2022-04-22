@@ -41,7 +41,7 @@ func TestCreateNFTRepository(t *testing.T) {
 	c := &MockArtworkCacheService{}
 	repo := New(s, c)
 	if repo == nil {
-		t.Fatal("Ceerroruld not create an NFT Repository.")
+		t.Fatal("Could not create an NFT Repository.")
 	}
 }
 

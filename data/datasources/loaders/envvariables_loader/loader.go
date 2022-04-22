@@ -4,6 +4,7 @@ package envvariables_loader
 import (
 	"errors"
 	"os"
+	"strconv"
 
 	"github.com/joho/godotenv"
 )
@@ -21,7 +22,8 @@ type EthAccountValues struct {
 
 // RedisEnvValues are the redis db host.
 type RedisEnvValues struct {
-	Host string
+	Host              string
+	ExpirationSeconds int
 }
 
 // LoadMoralisEnvValues loads MoralisEnvValues from a .env file.
@@ -71,5 +73,11 @@ func LoadRedisEnvValues(envPath string) (RedisEnvValues, error) {
 		return RedisEnvValues{}, errors.New("Failed to get host of redis db.")
 	}
 
-	return RedisEnvValues{host}, nil
+	expirationSecondsString := os.Getenv("REDIS_EXPIRATION_SECONDS")
+	expirationSeconds, err := strconv.Atoi(expirationSecondsString)
+	if err != nil {
+		return RedisEnvValues{}, err
+	}
+
+	return RedisEnvValues{host, expirationSeconds}, nil
 }

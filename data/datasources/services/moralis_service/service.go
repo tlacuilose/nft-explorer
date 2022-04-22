@@ -38,7 +38,6 @@ func (ms *MoralisService) SetChain(chain string) {
 
 // GetNFTsOfAccount will return all nfts from an account using the moralis api.
 func (ms *MoralisService) GetNFTsOfAccount(account string) (*moralis_service_entities.MoralisResponse, error) {
-	fmt.Println(account)
 	err := validateEthAccount(account)
 	if err != nil {
 		return &moralis_service_entities.MoralisResponse{}, err

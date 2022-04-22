@@ -15,7 +15,7 @@ func TestNewRedisService(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	redis := New(redisEnv.Host)
+	redis := New(redisEnv.Host, redisEnv.ExpirationSeconds)
 
 	if redis == nil {
 		t.Fatal("Could not create a redis service.")
@@ -25,12 +25,11 @@ func TestNewRedisService(t *testing.T) {
 // Take a non ocurring test to manage from redis db.
 var testOwner string = "not_valid_eth_account"
 var testArtworks []entities.Artwork = []entities.Artwork{
-	entities.Artwork{
+	{
 		Name:        "test_name",
 		Description: "test_description",
 		ImageUrl:    "test_image_url",
-	},
-	entities.Artwork{
+	}, {
 		Name:        "test_name2",
 		Description: "test_description2",
 		ImageUrl:    "test_image_url2",
@@ -44,7 +43,7 @@ func TestRedisServiceAsArtworkCacheService(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	redis := New(redisEnv.Host)
+	redis := New(redisEnv.Host, redisEnv.ExpirationSeconds)
 
 	// Testing cacheing
 	err = redis.CacheOwnedArtworks(testOwner, testArtworks)
