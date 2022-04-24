@@ -17,7 +17,8 @@ type MoralisEnvValues struct {
 
 // EthAccountValues are an Ethereum account.
 type EthAccountValues struct {
-	Account string
+	Account           string
+	KnownArtworkNamed string
 }
 
 // RedisEnvValues are the redis db host.
@@ -58,7 +59,12 @@ func LoadTestingEthAccountValues(envPath string) (EthAccountValues, error) {
 		return EthAccountValues{}, errors.New("Failed to get ethereum account env variable.")
 	}
 
-	return EthAccountValues{account}, nil
+	knownArtworkName := os.Getenv("TESTING_ARTWORK_NAME")
+	if knownArtworkName == "" {
+		return EthAccountValues{}, errors.New("Failed to get testing artwork name from env variable.")
+	}
+
+	return EthAccountValues{account, knownArtworkName}, nil
 }
 
 // LoadRedisEnvValues loads RedisEnvValues from a .env file.

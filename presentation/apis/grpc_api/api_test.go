@@ -16,7 +16,6 @@ import (
 var logger *log.Logger = log.New(os.Stdout, "[TEST] ", 2)
 
 var serverPort int = 50003
-var accountHasArtworkNamed string = "Runa need to kill you with ice skate boots #20"
 
 // Mock a client call of the gRPC API.
 func clientCall(t *testing.T, c chan *proto.Artwork) {
@@ -39,7 +38,7 @@ func clientCall(t *testing.T, c chan *proto.Artwork) {
 
 	for {
 		art, err := stream.Recv()
-		if art.Name == accountHasArtworkNamed {
+		if art.Name == accountEnv.KnownArtworkNamed {
 			c <- art
 			break
 		}
@@ -55,6 +54,11 @@ func clientCall(t *testing.T, c chan *proto.Artwork) {
 
 // Test that the gRPC server can be used by a client.
 func TestNFTExplorerGrpcServer(t *testing.T) {
+	accountEnv, err := envvariables_loader.LoadTestingEthAccountValues("../../../.env")
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	c := make(chan *proto.Artwork)
 	go StartGrpcServer(serverPort)
 	go clientCall(t, c)
@@ -64,7 +68,7 @@ func TestNFTExplorerGrpcServer(t *testing.T) {
 		t.Fatal("Failed to get any artwork from grpc connection.")
 	}
 	logger.Printf("Testing Artwork Name: %s", art.Name)
-	if art.Name != accountHasArtworkNamed {
-		t.Fatalf("Failed to get the testing artwork with name: %s", accountHasArtworkNamed)
+	if art.Name != accountEnv.KnownArtworkNamed {
+		t.Fatalf("Failed to get the testing artwork with name: %s", accountEnv.KnownArtworkNamed)
 	}
 }

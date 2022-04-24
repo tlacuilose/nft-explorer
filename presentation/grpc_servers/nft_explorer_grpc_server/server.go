@@ -2,6 +2,7 @@
 package nft_explorer_grpc_server
 
 import (
+	"errors"
 	"log"
 	"sync"
 
@@ -21,7 +22,7 @@ func (s *NFTExplorerServer) ListOwnedArtworks(account *proto.Account, stream pro
 
 	artworks, err := ownedartworks_usecase.GetOwnedArtworks(account.Address)
 	if err != nil {
-		return err
+		return errors.New("Server error!")
 	}
 	for _, artwork := range artworks {
 		wg.Add(1)
