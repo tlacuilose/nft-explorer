@@ -2,6 +2,7 @@
 package grpc_api
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net"
@@ -13,14 +14,14 @@ import (
 )
 
 // StartGrpcServer starts a gRPC server on a given port.
-func StartGrpcServer(port int) {
+func StartGrpcServer(ctx context.Context, port int) {
 	serverPort := fmt.Sprintf(":%d", port)
 	lis, err := net.Listen("tcp", serverPort)
 	if err != nil {
 		log.Fatalf("Could not start listening in tcp at port: %s", serverPort)
 	}
 
-	server := nft_explorer_grpc_server.NFTExplorerServer{}
+	server := nft_explorer_grpc_server.NFTExplorerServer{Ctx: ctx}
 
 	var opts []grpc.ServerOption
 	grpcServer := grpc.NewServer(opts...)

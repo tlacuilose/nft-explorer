@@ -1,9 +1,15 @@
 package main
 
-import "github.com/tlacuilose/nft-explorer/presentation/apis/grpc_api"
+import (
+	"context"
+
+	"github.com/tlacuilose/nft-explorer/presentation/apis/grpc_api"
+)
 
 var serverPort int = 50005
 
 func main() {
-	grpc_api.StartGrpcServer(serverPort)
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, "envPath", "./.env")
+	grpc_api.StartGrpcServer(ctx, serverPort)
 }
