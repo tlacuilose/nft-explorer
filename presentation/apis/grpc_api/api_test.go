@@ -59,8 +59,11 @@ func TestNFTExplorerGrpcServer(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, "envPath", "../../../.env")
+
 	c := make(chan *proto.Artwork)
-	go StartGrpcServer(serverPort)
+	go StartGrpcServer(ctx, serverPort)
 	go clientCall(t, c)
 
 	art := <-c

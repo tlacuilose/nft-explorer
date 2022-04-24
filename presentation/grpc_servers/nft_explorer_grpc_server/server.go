@@ -2,6 +2,7 @@
 package nft_explorer_grpc_server
 
 import (
+	"context"
 	"errors"
 	"log"
 	"sync"
@@ -14,13 +15,14 @@ import (
 // NFTExplorerServer is used to acces the gRPC server for nft explorer.
 type NFTExplorerServer struct {
 	proto.UnimplementedNFTExplorerServer
+	Ctx context.Context
 }
 
 // ListOwnedArtworks is a server side streaming procedure call that returns a stream of artworks, and takes an Account.
 func (s *NFTExplorerServer) ListOwnedArtworks(account *proto.Account, stream proto.NFTExplorer_ListOwnedArtworksServer) error {
 	var wg sync.WaitGroup
 
-	artworks, err := ownedartworks_usecase.GetOwnedArtworks(account.Address)
+	artworks, err := ownedartworks_usecase.GetOwnedArtworks(s.Ctx, account.Address)
 	if err != nil {
 		return errors.New("Server error!")
 	}

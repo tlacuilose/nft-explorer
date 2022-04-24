@@ -2,6 +2,9 @@
 package ownedartworks_usecase
 
 import (
+	"context"
+	"fmt"
+
 	"github.com/tlacuilose/nft-explorer/data/adapters/nft_api_service_adapter"
 	"github.com/tlacuilose/nft-explorer/data/datasources/loaders/envvariables_loader"
 	"github.com/tlacuilose/nft-explorer/data/datasources/services/moralis_service"
@@ -11,8 +14,9 @@ import (
 )
 
 // GetOwnedArtworks returns a collection of artworks belonging to an owner.
-func GetOwnedArtworks(owner string) ([]entities.Artwork, error) {
-	moralisEnv, err := envvariables_loader.LoadMoralisEnvValues("../../../.env")
+func GetOwnedArtworks(ctx context.Context, owner string) ([]entities.Artwork, error) {
+	envPath := fmt.Sprintf("%s", ctx.Value("envPath"))
+	moralisEnv, err := envvariables_loader.LoadMoralisEnvValues(envPath)
 	if err != nil {
 		return nil, err
 	}
@@ -22,7 +26,7 @@ func GetOwnedArtworks(owner string) ([]entities.Artwork, error) {
 		return nil, err
 	}
 
-	redisEnv, err := envvariables_loader.LoadRedisEnvValues("../../../.env")
+	redisEnv, err := envvariables_loader.LoadRedisEnvValues(envPath)
 	if err != nil {
 		return nil, err
 	}

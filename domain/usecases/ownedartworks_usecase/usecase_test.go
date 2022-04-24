@@ -1,6 +1,7 @@
 package ownedartworks_usecase
 
 import (
+	"context"
 	"log"
 	"os"
 	"testing"
@@ -16,7 +17,10 @@ func TestGetOwnedArtworks(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	arworks, err := GetOwnedArtworks(testingAccount.Account)
+
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, "envPath", "../../../.env")
+	arworks, err := GetOwnedArtworks(ctx, testingAccount.Account)
 	if err != nil {
 		t.Fatal(err)
 	}

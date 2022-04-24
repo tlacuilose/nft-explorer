@@ -59,7 +59,10 @@ func serverCall(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	server := NFTExplorerServer{}
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, "envPath", "../../../.env")
+
+	server := NFTExplorerServer{Ctx: ctx}
 
 	var opts []grpc.ServerOption
 	grpcServer := grpc.NewServer(opts...)
